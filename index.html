@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Parallel Timer - Fridge Combo</title>
+    <title>Parallel Timer</title>
     <link rel="apple-touch-icon" href="image_21.png">
     <link rel="icon" type="image/png" href="image_21.png">
     <style>
@@ -11,9 +11,7 @@
             --bg: #fff;
             --main: #111;
             --accent: #eee;
-            --input-bg: #fafafa;
             --radius: 15px;
-            --alert: #ff3b30;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -26,21 +24,19 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            padding: 15px;
+            padding: 10px;
         }
 
-        .fridge-container { width: 100%; max-width: 420px; text-align: center; }
-        h1 { font-size: 1.8rem; margin: 10px 0 5px; font-weight: 800; letter-spacing: -1px; }
-        .subtitle { color: #999; font-size: 0.85rem; margin-bottom: 20px; }
+        .fridge-container { width: 100%; max-width: 420px; display: flex; flex-direction: column; height: 100%; }
 
         /* Timer Card */
         .timer-card {
-            background: var(--input-bg);
+            background: #fafafa;
             border: 2px solid var(--accent);
             border-radius: var(--radius);
             padding: 15px;
-            margin-bottom: 15px;
-            transition: all 0.2s ease;
+            margin-bottom: 12px;
+            transition: all 0.2s;
         }
         .timer-card.running { border-color: var(--main); background: #fff; }
         .timer-card.alarm { animation: blink 0.5s infinite; border-color: var(--main); }
@@ -51,63 +47,43 @@
             100% { background-color: #fff; color: #111; }
         }
 
-        .display { font-size: 3.5rem; font-weight: 800; font-variant-numeric: tabular-nums; margin-bottom: 10px; }
+        .display { font-size: 4rem; font-weight: 800; font-variant-numeric: tabular-nums; text-align: center; margin-bottom: 10px; }
 
-        /* Control Buttons */
+        /* Controls */
         .adder-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
         .add-btn {
-            background: var(--accent);
-            border: none;
-            padding: 12px 0;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            font-weight: 800;
-            color: var(--main);
-            cursor: pointer;
+            background: var(--accent); border: none; padding: 15px 0;
+            border-radius: 10px; font-size: 0.85rem; font-weight: 800; color: var(--main); cursor: pointer;
         }
         .add-btn:active { background: #ccc; }
 
-        .action-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; }
+        .action-grid { display: grid; grid-template-columns: 3fr 1fr; gap: 10px; }
         .main-btn {
-            background: var(--main);
-            color: #fff;
-            border: none;
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
+            background: var(--main); color: #fff; border: none; padding: 18px;
+            border-radius: 12px; font-size: 1.1rem; font-weight: 800; cursor: pointer;
         }
         .reset-btn {
-            background: #fff;
-            border: 2px solid var(--accent);
-            color: #999;
-            padding: 15px;
-            border-radius: 12px;
-            font-weight: bold;
-            cursor: pointer;
+            background: #fff; border: 2px solid var(--accent); color: #ccc;
+            padding: 18px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 0.75rem;
         }
 
-        /* Common Parts */
-        .footer-btns { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 30px 0; }
+        /* Footer Info */
+        .footer-btns { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 20px 0; }
         .kofi-btn, .home-btn {
             display: inline-flex; align-items: center; padding: 12px 20px;
-            border-radius: var(--radius); font-weight: bold; font-size: 0.9rem; text-decoration: none;
+            border-radius: var(--radius); font-weight: bold; font-size: 0.8rem; text-decoration: none;
         }
         .kofi-btn { background: var(--main); color: #fff; }
-        .home-btn { background: var(--accent); color: var(--main); border: none; cursor: pointer; }
+        .home-btn { background: var(--accent); color: var(--main); border: none; }
 
-        footer { font-size: 0.75rem; color: #bbb; line-height: 1.6; }
+        footer { font-size: 0.7rem; color: #bbb; text-align: center; padding-bottom: 20px; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: #fff; padding: 30px; border-radius: var(--radius); max-width: 300px; text-align: left; }
+        .modal-content { background: #fff; padding: 30px; border-radius: var(--radius); max-width: 300px; }
     </style>
 </head>
 <body>
 
 <div class="fridge-container">
-    <h1>Parallel Timer</h1>
-    <p class="subtitle">Multi-tasking commander for your kitchen.</p>
-
     <div class="timer-card" id="card-1">
         <div class="display" id="display-1">00:00</div>
         <div class="adder-grid">
@@ -118,41 +94,25 @@
         </div>
         <div class="action-grid">
             <button class="main-btn" id="start-1" onclick="toggleTimer(1)">START</button>
-            <button class="reset-btn" onclick="resetTimer(1)">RESET</button>
+            <button class="reset-btn" onclick="resetTimer(1)">CLR</button>
         </div>
     </div>
 
     <div class="timer-card" id="card-2">
         <div class="display" id="display-2">00:00</div>
-        <div class="adder-grid">
-            <button class="add-btn" onclick="addTime(2, 600)">+10m</button>
-            <button class="add-btn" onclick="addTime(2, 300)">+5m</button>
-            <button class="add-btn" onclick="addTime(2, 60) ">+1m</button>
-            <button class="add-btn" onclick="addTime(2, 10) ">+10s</button>
-        </div>
-        <div class="action-grid">
-            <button class="main-btn" id="start-2" onclick="toggleTimer(2)">START</button>
-            <button class="reset-btn" onclick="resetTimer(2)">RESET</button>
-        </div>
+        <div class="adder-grid"><button class="add-btn" onclick="addTime(2, 600)">+10m</button><button class="add-btn" onclick="addTime(2, 300)">+5m</button><button class="add-btn" onclick="addTime(2, 60) ">+1m</button><button class="add-btn" onclick="addTime(2, 10) ">+10s</button></div>
+        <div class="action-grid"><button class="main-btn" id="start-2" onclick="toggleTimer(2)">START</button><button class="reset-btn" onclick="resetTimer(2)">CLR</button></div>
     </div>
 
     <div class="timer-card" id="card-3">
         <div class="display" id="display-3">00:00</div>
-        <div class="adder-grid">
-            <button class="add-btn" onclick="addTime(3, 600)">+10m</button>
-            <button class="add-btn" onclick="addTime(3, 300)">+5m</button>
-            <button class="add-btn" onclick="addTime(3, 60) ">+1m</button>
-            <button class="add-btn" onclick="addTime(3, 10) ">+10s</button>
-        </div>
-        <div class="action-grid">
-            <button class="main-btn" id="start-3" onclick="toggleTimer(3)">START</button>
-            <button class="reset-btn" onclick="resetTimer(3)">RESET</button>
-        </div>
+        <div class="adder-grid"><button class="add-btn" onclick="addTime(3, 600)">+10m</button><button class="add-btn" onclick="addTime(3, 300)">+5m</button><button class="add-btn" onclick="addTime(3, 60) ">+1m</button><button class="add-btn" onclick="addTime(3, 10) ">+10s</button></div>
+        <div class="action-grid"><button class="main-btn" id="start-3" onclick="toggleTimer(3)">START</button><button class="reset-btn" onclick="resetTimer(3)">CLR</button></div>
     </div>
 
     <div class="footer-btns">
-        <a href="https://ko-fi.com/afrorakda" target="_blank" class="kofi-btn">🍵 Support me on Ko-fi</a>
-        <button class="home-btn" id="homeBtn">Add to Home Screen</button>
+        <a href="https://ko-fi.com/afrorakda" target="_blank" class="kofi-btn">🍵 Ko-fi</a>
+        <button class="home-btn" id="homeBtn">Add to Home</button>
     </div>
 
     <footer>
@@ -163,21 +123,27 @@
 
 <div id="modal" class="modal">
     <div class="modal-content">
-        <strong>📱 Install</strong><p>Add to home screen.<br>Safari: Share > Add to Home<br>Chrome: Menu > Add to home</p>
-        <button onclick="document.getElementById('modal').style.display='none'" class="home-btn" style="width:100%">Close</button>
+        <strong>📱 Install</strong><p>Safari: Share > Add to Home Screen<br>Chrome: Menu > Add to home screen</p>
+        <button onclick="document.getElementById('modal').style.display='none'" class="add-btn" style="width:100%">Close</button>
     </div>
 </div>
 
 <script>
     const timers = {
-        1: { time: 0, interval: null, running: false },
-        2: { time: 0, interval: null, running: false },
-        3: { time: 0, interval: null, running: false }
+        1: { time: 0, interval: null, running: false, alarmInt: null },
+        2: { time: 0, interval: null, running: false, alarmInt: null },
+        3: { time: 0, interval: null, running: false, alarmInt: null }
     };
 
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    let audioCtx = null;
+
+    function initAudio() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
 
     function beep() {
+        if (!audioCtx) return;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.connect(gain);
@@ -186,43 +152,45 @@
         osc.frequency.setValueAtTime(880, audioCtx.currentTime);
         gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
         osc.start();
-        osc.stop(audioCtx.currentTime + 0.1);
-    }
-
-    function formatTime(seconds) {
-        const m = Math.floor(seconds / 60);
-        const s = seconds % 60;
-        return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        osc.stop(audioCtx.currentTime + 0.12);
     }
 
     function addTime(id, sec) {
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        timers[id].time += sec;
-        if (timers[id].time > 5999) timers[id].time = 5999;
+        initAudio();
+        const t = timers[id];
+        if (t.alarmInt) stopAlarm(id);
+        t.time += sec;
+        if (t.time > 5999) t.time = 5999;
         updateDisplay(id);
     }
 
     function updateDisplay(id) {
-        document.getElementById(`display-${id}`).textContent = formatTime(timers[id].time);
+        const m = Math.floor(timers[id].time / 60);
+        const s = timers[id].time % 60;
+        document.getElementById(`display-${id}`).textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
     }
 
     function toggleTimer(id) {
-        if (audioCtx.state === 'suspended') audioCtx.resume();
+        initAudio();
         const t = timers[id];
         const btn = document.getElementById(`start-${id}`);
         const card = document.getElementById(`card-${id}`);
 
+        if (t.alarmInt) {
+            stopAlarm(id);
+            return;
+        }
+
         if (t.running) {
             clearInterval(t.interval);
             t.running = false;
-            btn.textContent = 'START';
+            btn.textContent = 'RESUME';
             card.classList.remove('running');
         } else {
             if (t.time <= 0) return;
             t.running = true;
             btn.textContent = 'PAUSE';
             card.classList.add('running');
-            card.classList.remove('alarm');
             
             t.interval = setInterval(() => {
                 t.time--;
@@ -230,27 +198,36 @@
                 if (t.time <= 0) {
                     clearInterval(t.interval);
                     t.running = false;
-                    btn.textContent = 'START';
+                    btn.textContent = 'STOP';
                     card.classList.remove('running');
                     card.classList.add('alarm');
-                    playAlarm();
+                    startAlarm(id);
                 }
             }, 1000);
         }
     }
 
-    function playAlarm() {
+    function startAlarm(id) {
         let count = 0;
-        const alertInterval = setInterval(() => {
+        timers[id].alarmInt = setInterval(() => {
             beep();
             count++;
-            if (count > 5) clearInterval(alertInterval);
+            if (count > 150) stopAlarm(id); // 30 seconds (5 beeps per sec approx)
         }, 200);
+    }
+
+    function stopAlarm(id) {
+        const t = timers[id];
+        clearInterval(t.alarmInt);
+        t.alarmInt = null;
+        document.getElementById(`card-${id}`).classList.remove('alarm');
+        document.getElementById(`start-${id}`).textContent = 'START';
     }
 
     function resetTimer(id) {
         const t = timers[id];
         clearInterval(t.interval);
+        if (t.alarmInt) stopAlarm(id);
         t.time = 0;
         t.running = false;
         updateDisplay(id);
